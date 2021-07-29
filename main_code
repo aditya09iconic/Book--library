@@ -1,0 +1,107 @@
+# Create a Library Class to...
+# Display Book
+# Lend Book - who has the book if not present in library
+# Add Book
+# Return Book
+# dictionary(book:borrower_name)
+
+class Library:
+    def __init__(self, libname, booklist, lenddict):
+        self.book_list = booklist
+        self.lib_name = libname
+        self.lend_dict = lenddict
+        pass
+
+    def add_book(self):
+        while True:
+            bk_name = input("Enter Name of the Book to add:\n")
+            if bk_name.upper() == "X":
+                break
+            # Adding new book name in the book_list list in upper case
+            self.book_list.append(bk_name.upper())
+            # Adding new book name in the Dictionary with "Available" remarks
+            self.lend_dict[bk_name.upper()] = "Available"
+            print("Type X to Quit. Or,")
+
+    def lend_book(self):
+        lend_name = input("Enter Borrower's Name:\n")
+        bk_name = input("Enter Book's Name:\n")
+        # Searching for book name in the Dictionary
+        if bk_name.upper() in self.lend_dict.keys():
+            # Check if the book is not issued to anyone
+            if self.lend_dict[bk_name.upper()] == "Available":
+                print("Book available with us. Issuing it in your name.")
+                self.lend_dict[bk_name.upper()] = lend_name
+                print("Updated Dictionary is: ", self.lend_dict)
+            else:
+                # If the book is already issued to someone else
+                print("Sorry. This book is already issued to", self.lend_dict[bk_name.upper()])
+        else:
+            # If the book was never added to the list
+            print("Book not in our stock. Sorry.")
+        input("\nPress any key to continue...")
+
+    def return_book(self):
+        lend_name = input("Enter Borrower's Name:\n")
+        bk_name = input("Enter Book's Name:\n")
+        # Searching for book name in the Dictionary
+        if bk_name.upper() in self.lend_dict.keys():
+            # Check if the book was issued to lend_name
+            if self.lend_dict[bk_name.upper()] == lend_name:
+                print("Book received back with thanks.")
+                self.lend_dict[bk_name.upper()] = "Available"
+                print("Updated Dictionary is: ", self.lend_dict)
+            else:
+                # If the book is already issued to someone else
+                print("Sorry. This book was issued to", self.lend_dict[bk_name.upper()])
+        else:
+            # If the book was never added to the list
+            print("Sorry. You have entered a wrong book name")
+        input("\nPress any key to continue...")
+
+
+    def disp_book(self):
+        print("\nList of Books in", (self.lib_name), "Library are:")
+        # Prnting all items of a list
+        for keys in self.lend_dict:
+            print(keys, ":", self.lend_dict[keys])
+        input("\nPress any key to continue...")
+
+
+# Create a main function to run an infinite loop asking user for their inputs
+if __name__ == '__main__':
+    print("\nWelcome to Library Management System")
+    # Input name of the library
+    lib_name = input("Enter name of the Library:\n")
+    # A blank list is inititalized
+    book_list = []
+    # A blank lending Dictionary is inititalized
+    lend_dict = {}
+
+    # An object named lib of Library class is created
+    lib = Library(lib_name, book_list, lend_dict)
+
+    while True:
+        print("\n.........Welcome to Library Management System of", lib.lib_name, "...............\n")
+        print("Enter your option:")
+        print("Add Book      (A):")
+        print("Lend Book     (L):")
+        print("Return Book   (R):")
+        print("Display Books (D):")
+        print("Exit          (X):")
+        opt = input()
+        if opt.upper() == "A":
+            lib.add_book()
+        elif opt.upper() == "L":
+            lib.lend_book()
+        elif opt.upper() == "R":
+            lib.return_book()
+        elif opt.upper() == "D":
+            lib.disp_book()
+        elif opt.upper() == "X":
+            print("\nOk. Exit the program.")
+            break
+        else:
+            print("Invalid input. Try again")
+
+print("Good bye...")
